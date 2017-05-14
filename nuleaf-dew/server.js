@@ -3,7 +3,6 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var fs = require('fs');
 var path = require('path');
-var protocol = process.env.ENABLE_SSL ? require('https') : require('http');
 
 var api = require('./server/api');
 
@@ -36,7 +35,9 @@ if (process.env.ENABLE_SSL) {
   if (process.env.CERT_FILE) options.cert = fs.readFileSync(process.env.CERT_FILE, 'utf8');
 }
 
-var server = protocol.createServer(options, app);
+var server;
+if (process.env.ENABLE_SSL) server = require('https').createServer(options, app);
+else server = require('http').createServer(app);
 
 server.listen(port, function() {
   console.log('API running on port ' + port);

@@ -12,4 +12,7 @@ RUN cp -a /tmp/node_modules . && \
     cp -a /tmp/typings . && \
     npm run build:aot
 
-ENTRYPOINT ["npm", "run", "server"]
+# PORT is set by Heroku
+ENV PORT $PORT
+
+CMD ["npm", "run", "server"]
